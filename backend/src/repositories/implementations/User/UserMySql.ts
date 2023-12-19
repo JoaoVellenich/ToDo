@@ -16,4 +16,17 @@ export class UserMySql implements IUserRepository {
     user.id = createUserResponse.dataValues.id;
     return user;
   }
+  async findUserByEmail(email: string): Promise<User | undefined> {
+    logger.info(`Search for user with email: ${email}`);
+    const findUserResponse = await UserModel.findOne({
+      where: {
+        email: email,
+      },
+    });
+    if (findUserResponse?.dataValues) {
+      const user = new User(findUserResponse.dataValues);
+      return user;
+    }
+    return undefined;
+  }
 }
