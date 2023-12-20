@@ -8,7 +8,6 @@ export class User {
   public createdAt!: number;
   public updatedAt!: number;
   constructor(props: IUser, id?: number) {
-    console.log(props);
     Object.assign(this, props);
     if (id) {
       this.id = id;
