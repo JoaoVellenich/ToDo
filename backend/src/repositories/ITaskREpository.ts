@@ -6,4 +6,5 @@ export interface ITaskRepository {
   getTasksFromUser(userId: number): Promise<Task[] | undefined>;
   completeTask(id: number): Promise<Task>;
   excludeTask(id: number): Promise<Task>;
+  editTask(id: number, name: string): Promise<Task>;
 }

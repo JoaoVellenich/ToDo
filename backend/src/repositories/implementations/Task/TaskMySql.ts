@@ -68,4 +68,17 @@ export class TaskMySql implements ITaskRepository {
       throw new Error(`Error to find task with id: ${id}`);
     }
   }
+  async editTask(id: number, name: string): Promise<Task> {
+    const task = await TaskModel.findByPk(id);
+    if (task) {
+      const date = new Date();
+      task.update({
+        name: name,
+        updatedAt: date.getTime(),
+      });
+      return new Task(task.dataValues);
+    } else {
+      throw new Error(`Error to find task with id: ${id}`);
+    }
+  }
 }

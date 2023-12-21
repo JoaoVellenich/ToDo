@@ -5,3 +5,8 @@ export const CreateTaskSchema = Joi.object({
 });
 
 export const TaskIdSchema = Joi.number();
+
+export const EditTaskSchema = Joi.object({
+  name: Joi.string().required().min(3).max(100),
+  id: Joi.number(),
+});
