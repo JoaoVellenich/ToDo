@@ -44,6 +44,7 @@ export class TaskMySql implements ITaskRepository {
       const date = new Date();
       task.update({
         completedAt: date.getTime(),
+        updatedAt: date.getTime(),
       });
       return new Task(task.dataValues);
     } else {
@@ -56,6 +57,7 @@ export class TaskMySql implements ITaskRepository {
       const date = new Date();
       task.update({
         excludeAt: date.getTime(),
+        updatedAt: date.getTime(),
       });
       return new Task(task.dataValues);
     } else {

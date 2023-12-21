@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { logger } from "../../../services/logging/winston";
-import { CreateTaskSchema } from "../../../services/joi/TaskJOi";
+import { CreateTaskSchema } from "../../../services/joi/TaskJoi";
 import { ITaskRepository } from "../../../repositories/ITaskREpository";
 import { TaskMySql } from "../../../repositories/implementations/Task/TaskMySql";
 import { Task } from "../../../entities/Task";
@@ -30,7 +30,7 @@ export class CreateTask {
       response.status(200).send(taskCreated);
       return;
     } catch (err) {
-      logger.error("Failed to create user");
+      logger.error("Failed to create task");
       logger.error(err);
       response.status(500).send({
         error: err,

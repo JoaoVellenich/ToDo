@@ -6,3 +6,10 @@ export type IUser = {
   createdAt: number;
   updatedAt: number;
 };
+
+export type IAuthUser = {
+  email: string;
+  id: number;
+  iat: number;
+  exp: number;
+};
