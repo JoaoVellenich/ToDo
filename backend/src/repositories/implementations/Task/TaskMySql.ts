@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import { Task } from "../../../entities/Task";
 import TaskModel from "../../../models/TaskModel";
 import { ITaskRepository } from "../../ITaskREpository";
@@ -27,6 +28,9 @@ export class TaskMySql implements ITaskRepository {
     const tasksFound = await TaskModel.findAll({
       where: {
         ownerId: userId,
+        excludeAt: {
+          [Op.eq]: null,
+        },
       },
     });
     if (tasksFound.length > 0) {
