@@ -8,6 +8,10 @@ export class TaskValidations {
     return this.task.completedAt == null;
   }
   isUserOwnerOfTask() {
+    console.log(this.user);
     return this.task.ownerId == this.user.id;
+  }
+  isTaskNotDeleted() {
+    return this.task.excludeAt == null;
   }
 }

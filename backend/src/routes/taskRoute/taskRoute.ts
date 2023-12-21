@@ -3,6 +3,7 @@ import { authRoute } from "../../middlewares/Auth";
 import { CreateTask } from "../../UseCase/Tasks/Create/CreateTask.";
 import { CompleteTask } from "../../UseCase/Tasks/Complete/CompleteTask";
 import { GetAllTasks } from "../../UseCase/Tasks/GetAll/GetAllTasks";
+import { DeleteTask } from "../../UseCase/Tasks/Delete/DeleteTask";
 
 const TaskRouter = Router();
 
@@ -16,6 +17,10 @@ TaskRouter.post("/create", authRoute, (req, res) => {
 
 TaskRouter.get("/complete/:id", authRoute, (req, res) => {
   new CompleteTask().handle(req, res);
+});
+
+TaskRouter.delete("/delete/:id", authRoute, (req, res) => {
+  new DeleteTask().handle(req, res);
 });
 
 export default TaskRouter;
