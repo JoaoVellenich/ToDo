@@ -13,6 +13,7 @@ export class GetAllTasks {
     try {
       const user = response.locals.user;
       const tasksFound = await this.TaskRepository.getTasksFromUser(user.id);
+      logger.info(`Get all tasks from user ${user.email}`);
       response.status(200).send(tasksFound);
     } catch (err) {
       logger.error("Failed to create task");
