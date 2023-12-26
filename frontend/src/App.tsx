@@ -1,4 +1,5 @@
 import React from "react";
+import "./style.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import privateRoutes from "./routes/PrivateRoutes";
 import publicRoute from "./routes/PublicRoutes";

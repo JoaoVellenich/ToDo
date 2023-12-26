@@ -1,10 +1,13 @@
 import express from "express";
 import db from "./config/db";
+import cors from "cors";
 import UserRouter from "./routes/userRoute/userRoute";
 import { logger } from "./services/logging/winston";
 import TaskRouter from "./routes/taskRoute/taskRoute";
 
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 
