@@ -1,3 +1,5 @@
 export default function checkAuth() {
-  return false;
+  const token = sessionStorage.getItem("Token");
+  console.log(token);
+  return token !== "" && token !== null;
 }

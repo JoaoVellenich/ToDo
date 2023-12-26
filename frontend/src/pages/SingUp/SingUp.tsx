@@ -42,7 +42,7 @@ const SingUp = (props: Props) => {
     };
     try {
       await registerUser(user);
-      navigate("/");
+      navigate("/login");
       return;
     } catch (error: any) {
       switch (error.response.data.details[0].path[0]) {
@@ -89,7 +89,7 @@ const SingUp = (props: Props) => {
             <ButtonComponent
               name="Voltar"
               functionsCall={() => {
-                navigate("/");
+                navigate("/login");
               }}
             />
           </C.ButtonBox>

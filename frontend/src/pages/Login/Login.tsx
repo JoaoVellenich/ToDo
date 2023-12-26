@@ -4,12 +4,15 @@ import * as C from "./styles";
 import { useNavigate } from "react-router";
 import Logo from "../../components/Logo/Logo";
 import ButtonComponent from "../../components/Button/Button";
+import { loginUser } from "../../services/api/Ueser";
 
 type Props = {};
 
 const Login = (props: Props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
@@ -25,8 +28,15 @@ const Login = (props: Props) => {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = () => {
-    console.log(email, password);
+  const handleSubmit = async () => {
+    try {
+      const loginResponse = await loginUser(email, password);
+      sessionStorage.setItem("Token", loginResponse.data.token);
+      navigate("/");
+    } catch (error: any) {
+      setError("Usuário invalido");
+      setTimeout(() => [setError("")], 2500);
+    }
   };
 
   const handleSingUp = () => {
@@ -52,6 +62,7 @@ const Login = (props: Props) => {
               onChange={handlePasswordChange}
             ></C.InputField>
           </C.InputArea>
+          {error !== "" && <C.ErrorMessage>{error}</C.ErrorMessage>}
           <C.ButtonArea>
             <ButtonComponent name="Enviar" functionsCall={handleSubmit} />
             <ButtonComponent name="Cadastrar" functionsCall={handleSingUp} />

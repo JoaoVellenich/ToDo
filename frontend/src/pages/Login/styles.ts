@@ -42,3 +42,9 @@ export const ButtonArea = styled.div`
   margin: 5px;
   width: 100%;
 `;
+
+export const ErrorMessage = styled.span`
+  margin: 3px;
+  color: red;
+  text-align: center;
+`;
