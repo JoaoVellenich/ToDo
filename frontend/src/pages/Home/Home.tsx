@@ -1,47 +1,69 @@
 import React, { useEffect, useState } from "react";
-
+import { useNavigate } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 import * as C from "./styles";
 import { ITask } from "../../types/Task";
+import { checkTask, createTask, getTasks } from "../../services/api/Task";
 
 type Props = {};
 
-const Data: ITask[] = [
-  {
-    id: 5,
-    name: "TaskTaskTaskTaskTaskTaskTaskTaskTaskTasTaskTaskTaks",
-    createdAt: "2023-12-21T20:50:27.000Z",
-    completedAt: null,
-    updatedAt: "2023-12-21T20:50:27.000Z",
-    excludeAt: null,
-    ownerId: 13,
-  },
-  {
-    id: 6,
-    name: "Task 132",
-    createdAt: "2023-12-21T20:50:27.000Z",
-    completedAt: "null",
-    updatedAt: "2023-12-21T20:50:27.000Z",
-    excludeAt: null,
-    ownerId: 13,
-  },
-];
-
 const Home = (props: Props) => {
+  const navigate = useNavigate();
+
+  const [orderedItems, setOrderedItems] = useState<ITask[]>([]);
   const [checkedItems, setCheckedItems] = useState<{ [key: number]: boolean }>(
-    Data.reduce((acc: any, item: any) => {
+    {}
+  );
+  const [newTask, setNewTask] = useState("");
+  const [newTaskError, setNewTaskError] = useState("");
+
+  const initializeCheckedItems = () => {
+    const initializedState = orderedItems.reduce((acc: any, item: any) => {
       acc[item.id] = item.completedAt !== null; // Inicializa todos como desmarcados
       return acc;
-    }, {})
-  );
-  const [orderedItems, setOrderedItems] = useState<ITask[]>(Data);
+    }, {});
 
-  const [completed, setCompleted] = useState([]);
-  const [todo, setTodo] = useState([]);
+    setCheckedItems(initializedState);
+  };
 
-  const toggleCheckbox = (itemId: number) => {
+  const handleNewTasChange = (event: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
+    setNewTask(event.target.value);
+  };
+
+  const submitNewTask = async () => {
+    try {
+      const createResponse = await createTask(newTask);
+      setOrderedItems((prevCheckedItems) => [
+        ...prevCheckedItems,
+        createResponse.data,
+      ]);
+    } catch (error: any) {
+      if (error.response.status === 403) {
+        sessionStorage.removeItem("Token");
+        navigate("/login");
+        return;
+      }
+      setNewTaskError("Nome invalido");
+      setTimeout(() => {
+        setNewTaskError("");
+      }, 2500);
+    }
+  };
+
+  const toggleCheckbox = async (itemId: number) => {
+    if (checkedItems[itemId]) {
+      // Dischedked
+    } else {
+      try {
+        await checkTask(itemId);
+      } catch (error) {
+        console.log(error);
+      }
+    }
     setCheckedItems((prevCheckedItems) => ({
       ...prevCheckedItems,
       [itemId]: !prevCheckedItems[itemId],
@@ -54,14 +76,7 @@ const Home = (props: Props) => {
     orderedItems.map((dado: any) => {
       if (checkedItems[dado.id]) {
         completed.push(
-          <C.TaskBox isChecked={checkedItems[dado.id]}>
-            <C.TaskCheckBox
-              type="checkbox"
-              checked={checkedItems[dado.id]}
-              onChange={() => {
-                toggleCheckbox(dado.id);
-              }}
-            ></C.TaskCheckBox>
+          <C.TaskBox key={dado.id} isChecked={checkedItems[dado.id]}>
             <C.TaskTitleBox>
               <C.TaskTitle>{dado.name}</C.TaskTitle>
             </C.TaskTitleBox>
@@ -72,7 +87,7 @@ const Home = (props: Props) => {
         );
       } else {
         todo.push(
-          <C.TaskBox isChecked={checkedItems[dado.id]}>
+          <C.TaskBox key={dado.id} isChecked={checkedItems[dado.id]}>
             <C.TaskCheckBox
               type="checkbox"
               checked={checkedItems[dado.id]}
@@ -109,14 +124,35 @@ const Home = (props: Props) => {
     );
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getTasks();
+        setOrderedItems(response.data);
+      } catch (error: any) {
+        if (error.response.status === 403) {
+          sessionStorage.removeItem("Token");
+          navigate("/login");
+          return;
+        }
+      }
+    };
+    fetchData();
+  }, [navigate]);
+
+  useEffect(() => {
+    initializeCheckedItems();
+  }, [orderedItems]);
+
   return (
     <C.PageContainer>
       <C.ContentContainer>
         <C.PageHeader>Lista</C.PageHeader>
         <C.InputContainer>
-          <C.InputText></C.InputText>
-          <C.AddButton>Adicionar</C.AddButton>
+          <C.InputText onChange={handleNewTasChange}></C.InputText>
+          <C.AddButton onClick={submitNewTask}>Adicionar</C.AddButton>
         </C.InputContainer>
+        {newTaskError !== "" && <C.ErrorMessage>{newTaskError}</C.ErrorMessage>}
       </C.ContentContainer>
       <C.TasksContainer>{formatContent()}</C.TasksContainer>
     </C.PageContainer>

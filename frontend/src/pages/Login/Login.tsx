@@ -32,7 +32,9 @@ const Login = (props: Props) => {
     try {
       const loginResponse = await loginUser(email, password);
       sessionStorage.setItem("Token", loginResponse.data.token);
+      window.location.reload();
       navigate("/");
+      return;
     } catch (error: any) {
       setError("Usuário invalido");
       setTimeout(() => [setError("")], 2500);
