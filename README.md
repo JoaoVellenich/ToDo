@@ -44,15 +44,15 @@ Dentro do banco de dados temos 2 tabelsa uma delas para os usuários e outra par
 
 #### Tasks
 
-| Colunas     | Tipo    |
-| ----------- | ------- |
-| id          | INT     |
-| name        | STRING  |
-| createdAt   | DATE    |
-| updatedAt   | DATE    |
-| completedAt | DATE    |
-| excludeAt   | DATE    |
-| ownerId     | INTEGER |
+| Colunas     | Tipo   |
+| ----------- | ------ |
+| id          | INT    |
+| name        | STRING |
+| createdAt   | DATE   |
+| updatedAt   | DATE   |
+| completedAt | DATE   |
+| excludeAt   | DATE   |
+| ownerId     | INT    |
 
 - id, representa a chave primária da tabela
 - name, representa o nome da task
@@ -60,3 +60,5 @@ Dentro do banco de dados temos 2 tabelsa uma delas para os usuários e outra par
 - excludeAt representa quando o usuário excluiu o dado
 - ownerId, é o id do usuario que criou a task
 - createdAt e updatedAt, representam as datas de criação e de update do usuário respectivamente
+
+## Rodar localmente
