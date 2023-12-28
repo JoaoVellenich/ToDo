@@ -45,18 +45,24 @@ const SingUp = (props: Props) => {
       navigate("/login");
       return;
     } catch (error: any) {
-      switch (error.response.data.details[0].path[0]) {
-        case "email":
-          setError(`O email informado está errado`);
-          break;
-        case "name":
-          setError("O nome infromado está errado");
-          break;
-        case "password":
-          setError("A senha informada está errada");
-          break;
-        default:
-          break;
+      if (error.response.status === 409) {
+        setError("Email já cadastrado");
+      } else if (error.response.status === 500) {
+        setError("Erro no sistema tente novamente mais tarde");
+      } else {
+        switch (error.response.data.details[0].path[0]) {
+          case "email":
+            setError(`O email informado está errado`);
+            break;
+          case "name":
+            setError("O nome infromado está errado");
+            break;
+          case "password":
+            setError("A senha informada está errada");
+            break;
+          default:
+            break;
+        }
       }
 
       setTimeout(() => [setError("")], 2500);

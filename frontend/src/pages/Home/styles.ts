@@ -106,6 +106,10 @@ export const TaskCheckBox = styled.input`
   width: 5%;
 `;
 
+export const Space = styled.div`
+  width: 5%;
+`;
+
 export const TaskTitleBox = styled.div`
   width: 90%;
   display: flex;

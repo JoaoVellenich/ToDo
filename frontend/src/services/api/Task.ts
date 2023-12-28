@@ -35,3 +35,13 @@ export async function checkTask(taskId: number) {
   });
   return response;
 }
+
+export async function deleteTask(taskId: number) {
+  const token = sessionStorage.getItem("Token");
+  const response = await api.delete(`/task/delete/${taskId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response;
+}
